@@ -5,9 +5,15 @@ driver:
 provisioner:
   name: puppet_apply
   puppet_environment: dev
+# the puppet environmnt files can be in this repository   
   puppet_environment_config_path: environment/dev/environment.conf
   manifests_path:  environment/dev/manifests
   modules_path: environment/dev/modules_mycompany
+# or external to this repository as long as they are accessible
+# puppet_environment_config_path: C:/my_environments/dev/environment.conf
+# manifests_path:                 C:/my_environments/dev/manifests
+# modules_path:                   C:my_environments/dev/modules_mycompany
+  
   hiera_data_path: hieradata
 #  puppetfile_path: environment/dev/Puppetfile
   require_puppet_repo: true
