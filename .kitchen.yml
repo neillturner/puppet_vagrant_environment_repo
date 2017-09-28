@@ -1,0 +1,45 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: puppet_apply
+  puppet_environment: dev
+  puppet_environment_config_path: environment/dev/environment.conf
+  manifests_path:  environment/dev/manifests
+  modules_path: environment/dev/modules_mycompany
+  hiera_data_path: hieradata
+#  puppetfile_path: environment/dev/Puppetfile
+  require_puppet_repo: true
+  require_chef_for_busser: false
+  librarian_puppet_ssl_file: 'C:/repository/puppet_repo/cacert.pem'
+  puppet_debug: true
+  puppet_verbose: true
+
+platforms:
+  - name: puppetlabs/centos-6.6-64-nocm
+    driver_plugin: vagrant
+  - name: puppetlabs/centos-7.2-64-nocm
+    driver_plugin: vagrant
+  - name: puppetlabs/ubuntu-16.04-64-nocm
+    driver_plugin: vagrant
+
+verifier:
+  name: serverspec
+
+suites:
+  - name: base
+    provisioner:
+      custom_facts:
+        role_name1: base
+        role_name2: webserver
+    verifier:
+      # test with default_pattern or specify a pattern in the repository
+      default_pattern: true
+      #patterns:
+      #- modules/mycompany_base/spec/acceptance/base_spec.rb
+      env_vars:
+        TARGET_HOST: 127.0.0.1
+        TARGET_PORT: 2222
+        LOGIN_USER: root
+        LOGIN_PASSWORD: puppet
